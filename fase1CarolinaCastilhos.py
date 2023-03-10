@@ -11,15 +11,15 @@ def cargaDosDados(nome):
         return dados
 
 #-------------------------------------------------------------------------------------------------------------------
-#                                         Exibição da Lista de Lista de Dados 
+#                                         Exibição de Lista de Lista de Dados 
 #-------------------------------------------------------------------------------------------------------------------
-
 def exibeLista(lista):
     nova = []
+    indice = 0
     while indice < len(lista):
         nova.append(lista[indice].split(';'))
         indice += 1
-    return nova
+    return print(f"\n>>> Lista de Dados Climáticos: \n\n{nova}")
 
 #-------------------------------------------------------------------------------------------------------------------
 #                                      Gravação dos Dados em Lista de Lista e em Arquivo txt 
@@ -115,7 +115,7 @@ while True:
         break
     else:
         if opcao == "1":
-
+            exibeLista(dadosProjeto)
         elif opcao == "2": 
             gravaArquivo('ListaDados.txt', dadosProjeto)
             print("\n>>> Dados gravados com sucesso!\n")
