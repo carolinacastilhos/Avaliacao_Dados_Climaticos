@@ -1,14 +1,25 @@
 #-------------------------------------------------------------------------------------------------------------------
 #                                      Leitura do Arquivo com Dados do Projeto
 #-------------------------------------------------------------------------------------------------------------------
-def cargaDosDados(nome):
-    arquivo = open(nome, "r")
-    dados = []
-    for linha in arquivo: 
-        linha1 = linha[:-1] #retira \n do final de cada linha
-        dados.append(linha1)
-    arquivo.close()
-    return dados
+def cargaDosDados(nome):     
+        arquivo = open(nome, "r") 
+        dados = []
+        for linha in arquivo: 
+            linha1 = linha[:-1] #retira \n do final de cada linha
+            dados.append(linha1)
+        arquivo.close()
+        return dados
+
+#-------------------------------------------------------------------------------------------------------------------
+#                                         Exibição da Lista de Lista de Dados 
+#-------------------------------------------------------------------------------------------------------------------
+
+def exibeLista(lista):
+    nova = []
+    while indice < len(lista):
+        nova.append(lista[indice].split(';'))
+        indice += 1
+    return nova
 
 #-------------------------------------------------------------------------------------------------------------------
 #                                      Gravação dos Dados em Lista de Lista e em Arquivo txt 
@@ -41,7 +52,7 @@ def conversaoDados(linha):
 #-------------------------------------------------------------------------------------------------------------------    
 def criaLista(lista):
     listaDeItens = []
-    contador = 1 #inicia a contagem a partir do índice 1 para não incluir o cabeçalho, pois ele é string
+    contador = 1 #inicia a contagem a partir do índice 1 para não incluir o cabeçalho
     while contador < len(lista):
         listaDeItens.append(conversaoDados(lista[contador]))
         contador += 1    
@@ -55,9 +66,9 @@ def exibeResultadoPrecipitação(lista):
       if data in item[0]:
           resultado.append(item[0:2])   
     if len(resultado) == 0:
-        return print(f"Não há dados para o período informado: {data}")
+        return print(f"\n>>> Não há dados para o período informado: {data}")
     else:
-        return print(f"Precipitação em {data}:\n {resultado}")                    
+        return print(f"\n>>> Precipitação em {data}:\n {resultado}")                    
     
 # #-------------------------------------------------------------------------------------------------------------------
 # #                                      Exibe Resultado dos Dados - Temperatura Máxima
@@ -76,9 +87,9 @@ def exibeResultadoTemperatura(lista, ano):
                 if contador == 7:
                     break
     if len(resultado) == 0:
-        return print(f"\nNão há dados para o período informado: {anoTemperatura}")
+        return print(f"\n>>> Não há dados para o período informado: {anoTemperatura}")
     else:
-        return print(f"\nTemperatura máxima dos 7 primeiros dias de cada mês de {anoTemperatura}:\n {resultado}")               
+        return print(f"\n>>> Temperatura máxima dos 7 primeiros dias dos meses de {anoTemperatura}:\n {resultado}")               
     
 #-------------------------------------------------------------------------------------------------------------------
 #                                                    Programa
@@ -92,28 +103,37 @@ while True:
     print("-"*80)
     print(" Informações climáticas do município de Porto Alegre, entre os anos 1961 e 2016")
     print("-"*80)
-    print("\n\n---- MENU ----")
-    print("1) Gravar Dados em Arquivo txt")
-    print("2) Dados da Precipitação")
-    print("3) Dados da Temperatura Máxima")
+    print("\n---- MENU ----")
+    print("1) Exibir Lista dos Dados Climáticos")
+    print("2) Gravar Dados em Arquivo txt")
+    print("3) Dados da Precipitação")
+    print("4) Dados da Temperatura Máxima")
     print("0) Sair do Programa")
     opcao = input("Informe a opção desejada: ")
     if opcao == "0":
-        print("Programa Finalizado. ")
+        print("\n>>> Programa Finalizado. ")
         break
     else:
-        if opcao == "1": 
+        if opcao == "1":
+
+        elif opcao == "2": 
             gravaArquivo('ListaDados.txt', dadosProjeto)
-            print("\nDados gravados com sucesso!\n")
-        elif opcao == "2":
-            print("\nDADOS DA PRECIPITAÇÃO (em milímetros por m2): \n")
+            print("\n>>> Dados gravados com sucesso!\n")
+        elif opcao == "3":
+            print("\n---- DADOS DA PRECIPITAÇÃO (em milímetros por m2) ---- \n")
             anoPrecipitacao = (input("Informe o ano que gostaria de saber a informação (entre 1961 e 2016): "))
             mesPrecipitacao = (input("Informe o mês (entre 01 e 12): "))
-            data = f"{mesPrecipitacao}/{anoPrecipitacao}"
-            exibeResultadoPrecipitação(dadosTratados)
-        elif opcao == "3":
-            print("\nDADOS DA TEMPERATURA MÁXIMA (em graus celsius): \n")
+            if (anoPrecipitacao < "1961" or anoPrecipitacao > "2016") or (mesPrecipitacao < "01" or mesPrecipitacao > "12"):
+                print("\n>>> O período informado é inválido.")                
+            else:
+                data = f"{mesPrecipitacao}/{anoPrecipitacao}"
+                exibeResultadoPrecipitação(dadosTratados)
+        elif opcao == "4":
+            print("\n---- DADOS DA TEMPERATURA MÁXIMA (em graus celsius) ---- \n")
             anoTemperatura = (input("Informe o ano que gostaria de saber a informação (entre 1961 e 2016): "))
-            data2 = f"{anoTemperatura}"
-            exibeResultadoTemperatura(dadosTratados, anoTemperatura)
-        else: print("Opção invalida. Digite uma opção entre 1 e 0.")
+            if (anoTemperatura < "1961" or anoTemperatura > "2016") or (len(anoTemperatura) != 4):
+                print("\n>>> O ano informado é inválido.")
+            else:
+                data2 = f"{anoTemperatura}"
+                exibeResultadoTemperatura(dadosTratados, anoTemperatura)
+        else: print("\n>>> Opção invalida. Digite uma opção entre 1 e 0.")
