@@ -98,7 +98,7 @@ def mesMaisChuvoso():
                 precipitacao[j+1] = aux
                 aux = meses[j]
                 meses[j] = meses[j+1]
-                meses[j+1] = aux
+                meses[j+1] = aux                
     print("\n---- MÊS COM MAIOR VALOR ACUMULADO DE CHUVA DE 1961 A 2016 ---- \n")
     print(f"\nO mês de {meses[0]} possui o maior valor acumulado de chuva no período avaliado, totalizando {precipitacao[0]:.3f} mm/m²\n")
 
@@ -124,6 +124,8 @@ def tempMinAgosto(ano):
     moda = statistics.mode(minimas) 
     media = temperatura/dias 
     print(f"Em agosto de {ano} a média das temperaturas mínimas foi {media:.3f}°C e a moda foi {moda:.3f}°C")
+    return minimas
+    
 
 #>>>>>>>>Vento
 
@@ -143,6 +145,7 @@ def ventoAgosto(ano):
     moda = statistics.mode(velocidadeVento) 
     media = vento/dias
     print(f"Em agosto de {ano} a média da velocidade do vento foi {media:.3f} m/s e a moda {moda:.3f} m/s")
+    return velocidadeVento
 
 #>>>>>>>>>Umidade
 
@@ -163,19 +166,54 @@ def umidadeAgosto(ano):
     moda = statistics.mode(umidadeRelativa) 
     media = umidade/dias 
     print(f"Em agosto de {ano} a média da umidade relativa do ar foi {media:.3f}% e a moda {moda:.3f}%")
+    return umidadeRelativa
    
 
 #>>>>>>>> Exibição dos dados
 
 def dadosAgostos():
     print("\n---- DADOS DO INVERNO DE 2006 A 2016 (MÊS DE AGOSTO) ---- \n")
-    for ano in range(2006,2016):
-        tempMinAgosto(ano)
-        umidadeAgosto(ano)
-        ventoAgosto(ano)
-        print("\n")
+    temperaturas = []
+    umidades = []
+    ventos = []
+    for ano in range(2006,2016): # exibe até 2015 por que 2016 não possui dados a partir de julho
+        temperaturas.append(tempMinAgosto(ano))
+        umidades.append(umidadeAgosto(ano))
+        ventos.append(ventoAgosto(ano))
+        print("\n")     
     print("O ano de 2016 não possui dados para o mês de agosto.\n")
-    print("A ")
+    
+    tempMedia = ventoMedio = umidMedia = 0
+    tempTotal = ventoTotal = umidTotal = 0
+    modasTemp = []
+    modasUmid = []
+    modasVento = []
+    for ano in temperaturas:
+        for temp in ano:
+            tempMedia += temp
+            tempTotal += 1
+            modasTemp.append(temp)
+    for ano in ventos:
+        for vento in ano:
+            ventoMedio += vento
+            ventoTotal += 1
+            modasVento.append(vento)
+    for ano in umidades:
+        for umid in ano:
+            umidMedia += umid
+            umidTotal += 1
+            modasUmid.append(umid)
+    tempMedia = tempMedia/tempTotal
+    temperaturaModa = statistics.mode(modasTemp)
+    ventoMedio = ventoMedio/ventoTotal
+    ventoModa = statistics.mode(modasVento)
+    umidMedia = umidMedia/umidTotal
+    umidadeModa = statistics.mode(modasUmid)
+    
+    print(f'\n>> Dados de todo o período (2006 a 2016):')
+    print(f'Temperatura mínima: Média = {tempMedia:.3f}°C | Moda = {temperaturaModa:.3f}°C')
+    print(f'Umidade relativa: Média = {umidMedia:.3f}% | Moda = {umidadeModa:.3f}%')
+    print(f'Velocidade de vento: Média = {ventoMedio:.3f}m/s | Moda = {ventoModa:.3f}m/s\n')
 
 #-------------------------------------------------------------------------------------------------------------------
 #                                               Década mais chuvosa
@@ -210,13 +248,20 @@ def decadaMaisChuvosa():
     precipitacao.append(chuva1990)
     precipitacao.append(chuva2000)
     precipitacao.append(chuva2010)
-    print("\n---- DÉCADA COM MAIOR MÉDIA DE CHUVA ACUMULADA POR ANO ---- \n") 
-    print("A precipitação média por ano das décadas ", decadas, " foi, respectivamente: \n", precipitacao, "\n")
+
+    print("\n---- DÉCADA COM MAIOR MÉDIA DE CHUVA ACUMULADA POR ANO ---- \n")  
+    print(">>> Precipitação média por ano:")
+    print(f'- Década {decadas[0]}: precipitação = {precipitacao[0]:.3f}mm/m²')
+    print(f'- Década {decadas[1]}: precipitação = {precipitacao[1]:.3f}mm/m²')
+    print(f'- Década {decadas[2]}: precipitação = {precipitacao[2]:.3f}mm/m²')
+    print(f'- Década {decadas[3]}: precipitação = {precipitacao[3]:.3f}mm/m²')
+    print(f'- Década {decadas[4]}: precipitação = {precipitacao[4]:.3f}mm/m²')
+    print(f'- Década {decadas[5]}: precipitação = {precipitacao[5]:.3f}mm/m²\n')  
 
  #>>>>>>>>> Gráfico
 
     plt.bar(decadas, precipitacao, color = "pink") # plota o gráfico de barras
-    plt.title("Precipitação acumulada média por ano (mm/m²) da década de 1960 a década de 2010") # título do gráfico
+    plt.title("Médias da precipitação acumulada por ano (mm/m²) da década de 1960 a década de 2010") # título do gráfico
     plt.xlabel("Décadas") # legenda eixo x
     plt.ylabel("Média de chuva acumulada por ano(mm/m²)") # legenda eixo y
     plt.show() # exibe o gráfico
@@ -231,7 +276,7 @@ def decadaMaisChuvosa():
                 decadas[j] = decadas[j+1]
                 decadas[j+1] = aux
                 
-    print(f"A década {decadas[0]} possuiu a maior média de chuva acumulada por ano no período avaliado: {precipitacao[0]:.3f} mm/m² de chuva.")
+    print(f"\nA década de {decadas[0]} possuiu a MAIOR MÉDIA de chuva acumulada por ano no período avaliado: {precipitacao[0]:.3f} mm/m² de chuva.")
 
 
 #-------------------------------------------------------------------------------------------------------------------
